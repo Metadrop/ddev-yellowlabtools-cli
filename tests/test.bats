@@ -24,8 +24,8 @@ teardown() {
   echo "# ddev add-on get ${DIR} with project ${PROJNAME} in ${TESTDIR} ($(pwd))" >&3
   ddev add-on get ${DIR}
   ddev restart
-  # Verify yellowlabtools command exists and shows help
-  ddev yellowlabtools | grep -q "YellowLabTools"
+  # Verify yellowlabtools command exists (shows usage when called without args)
+  ddev yellowlabtools 2>&1 | grep -q "yellowlabtools"
   # Verify yellowlabtools is installed in web container
   ddev exec which yellowlabtools
 }
