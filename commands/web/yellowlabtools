@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#ddev-generated
+## Description: Run YellowLabTools performance analysis
+## Usage: yellowlabtools <url> [flags]
+## Example: ddev yellowlabtools https://example.com\nddev yellowlabtools local\nddev yellowlabtools local --device=phone
+## Flags: [{"Name":"device","Shorthand":"d","Type":"string","Usage":"Device to simulate: phone, tablet (default: desktop)"},{"Name":"screenshot","Shorthand":"s","Type":"string","Usage":"Save screenshot to path (must end with .png)"},{"Name":"proxy","Shorthand":"p","Type":"string","Usage":"HTTP proxy (host:port)"},{"Name":"cookie","Shorthand":"c","Type":"string","Usage":"Set cookie (name=value; domain=.example.com)"},{"Name":"auth-user","Type":"string","Usage":"HTTP basic auth username"},{"Name":"auth-pass","Type":"string","Usage":"HTTP basic auth password"},{"Name":"reporter","Shorthand":"r","Type":"string","DefValue":"json","Usage":"Output format: json, xml"}]
+## AutocompleteTerms: ["local"]
+
+URL=${1:-}
+
+if [ -z "$URL" ]; then
+    echo "Error: URL is required"
+    echo "Usage: ddev yellowlabtools <url> [flags]"
+    echo "Use 'local' to analyze the local DDEV site"
+    exit 1
+fi
+
+# Handle "local" keyword to use DDEV's local URL
+if [ "$URL" = "local" ]; then
+    URL="https://${DDEV_HOSTNAME}"
+fi
+
+# Build yellowlabtools command with flags
+CMD="yellowlabtools $URL"
+
+[ -n "${FLAGS_DEVICE:-}" ] && CMD="$CMD --device=$FLAGS_DEVICE"
+[ -n "${FLAGS_SCREENSHOT:-}" ] && CMD="$CMD --screenshot=$FLAGS_SCREENSHOT"
+[ -n "${FLAGS_PROXY:-}" ] && CMD="$CMD --proxy=$FLAGS_PROXY"
+[ -n "${FLAGS_COOKIE:-}" ] && CMD="$CMD --cookie=$FLAGS_COOKIE"
+[ -n "${FLAGS_AUTH_USER:-}" ] && CMD="$CMD --auth-user=$FLAGS_AUTH_USER"
+[ -n "${FLAGS_AUTH_PASS:-}" ] && CMD="$CMD --auth-pass=$FLAGS_AUTH_PASS"
+[ -n "${FLAGS_REPORTER:-}" ] && CMD="$CMD --reporter=$FLAGS_REPORTER"
+
+eval $CMD

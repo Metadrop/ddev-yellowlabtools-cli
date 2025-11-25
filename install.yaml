@@ -1,0 +1,8 @@
+name: yellowlabtools-cli
+
+project_files:
+  - docker-compose.yellowlabtools.yaml
+  - web-build/Dockerfile.yellowlabtools
+  - commands/web/yellowlabtools
+
+ddev_version_constraint: '>= v1.23.0'
